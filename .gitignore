@@ -49,6 +49,7 @@ data/
 
 # Models cache
 /tmp/models/
+models/
 *.pt
 *.pth
 *.bin

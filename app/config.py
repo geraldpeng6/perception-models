@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     model_name: str = "facebook/pe-av-large"
     model_cache_dir: str = "/tmp/models"
     device: Literal["cpu", "cuda"] = "cpu"
+    hf_endpoint: str = ""  # Hugging Face mirror endpoint (e.g., https://hf-mirror.com)
 
     # Database settings
     database_url: str = "sqlite+aiosqlite:///./data/trenton.db"

@@ -1,6 +1,7 @@
 """PE-AV-Large model loading and management."""
 
 import asyncio
+import os
 from typing import Optional
 
 import torch
@@ -52,6 +53,11 @@ class ModelLoader:
         loop = asyncio.get_event_loop()
 
         def load():
+            # Set Hugging Face mirror endpoint if configured
+            if settings.hf_endpoint:
+                os.environ["HF_ENDPOINT"] = settings.hf_endpoint
+                logger.info(f"Using Hugging Face mirror: {settings.hf_endpoint}")
+            
             processor = PeAudioVideoProcessor.from_pretrained(settings.model_name)
             model = PeAudioVideoModel.from_pretrained(
                 settings.model_name,
