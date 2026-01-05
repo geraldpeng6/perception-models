@@ -1,0 +1,98 @@
+[project]
+name = "trenton"
+version = "0.1.0"
+description = "Multimodal search system with PE-AV-Large"
+requires-python = ">=3.10"
+dependencies = [
+    # Web framework
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+
+    # ML / Model
+    "transformers>=4.57.0",
+    "torch>=2.1.0",
+    "numpy>=1.24.0",
+
+    # Database
+    "sqlalchemy>=2.0.0",
+    "aiosqlite>=0.19.0",
+
+    # File monitoring
+    "watchdog>=3.0.0",
+
+    # Utilities
+    "python-multipart>=0.0.6",
+    "aiofiles>=23.2.0",
+    "python-dotenv>=1.0.0",
+
+    # Logging
+    "loguru>=0.7.0",
+]
+
+[project.optional-dependencies]
+# CPU-only version (for testing without GPU)
+cpu = [
+    "torch>=2.1.0",
+]
+
+# AMD GPU (ROCm) version - For Linux + AMD Radeon 8000S/8050S/8060S
+# Install with: uv pip install -e ".[amd-rocm]"
+amd-rocm = [
+    # PyTorch with ROCm support will be installed separately
+    "torch>=2.1.0",
+]
+
+# NVIDIA GPU (CUDA) version
+nvidia = [
+    "torch>=2.1.0",
+]
+
+# Development dependencies
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.25.0",
+    "black>=23.11.0",
+    "ruff>=0.1.0",
+    "mypy>=1.7.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.25.0",
+]
+
+# Override PyTorch source for AMD ROCm
+# Uncomment and use with: uv pip install --upgrade torch --index-url https://download.pytorch.org/whl/rocm5.7
+[tool.uv.sources]
+# torch = { index = "https://download.pytorch.org/whl/rocm5.7" }
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Code quality tools
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]  # Line too long
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
